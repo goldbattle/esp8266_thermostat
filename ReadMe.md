@@ -38,7 +38,7 @@ There is a pretty nice pre-made four relay system on amazon that I used, but one
 
 * [LinkSprite 211201004 Link Node R4 Arduino-Compatible Wi-Fi Relay Controller](https://www.amazon.com/gp/product/B01NB0XJ0F/)
 * [AC 100-240V to DC 5V 2A Power Supply Adapter](https://www.amazon.com/gp/product/B0719GY29M/)
-* Wire to connect to the heater/cooling unit
+* Wire to connect to the heater/cooling unit (I need to redo this with a smaller gauge)
 * Some quick disconnect plugs so you can disconnect easily (I need to buy these)
 
 
