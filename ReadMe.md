@@ -4,6 +4,7 @@
 This came out of the desire to have both remote and finer grain control of our heating and cooling system.
 Specifically for multi-floor houses with a single heating and cooling system it might be desirable to cool in respect to the top, ground, or basement floors.
 This of course isn't achievable in a single thermostat system, and thus a multi-sensor system that reports to central controller architecture was born.
+Overall the project costs about $100 for four remote sensing devices, a four relay central server, power and programing adapters.
 
 ![screenshot 1](docs/Screenshot_20190702-220020.jpg)
 ![screenshot 2](docs/Screenshot_20190702-220034.jpg)
