@@ -61,7 +61,7 @@ You will also need to configure the SSID and password for your wireless router s
 
 
 
-### Afterthoughts 
+## Afterthoughts 
 
 The one battle that I am still fighting is the calibration of the client devices.
 I think that I need to research a better way to calibrate these and maybe allow for me to set their calibration offsets through a web interface would allow for updating of their values more easily.
