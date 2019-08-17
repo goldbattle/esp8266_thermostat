@@ -1,10 +1,12 @@
 
-
+#include <time.h>
+#include <Hash.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
-#include <WiFiClient.h>
+#include <ESPAsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <EEPROM.h>
 #include <DHTesp.h>
-
 
 
 //=================================================
@@ -12,11 +14,14 @@
 
 const char* ssid     = "xxxxxxxx";
 const char* password = "xxxxxxxx";
-const String device  = "office";
-const String server  = "192.168.69.4";
+const String device  = "upstairs";
+const String server  = "thermostat.local.lan";
 
 //=================================================
 //=================================================
+
+// Create AsyncWebServer object on port 80
+AsyncWebServer website(80);
 
 // Poll frequency of the sensors (seconds)
 #define DEVICE_POLL_FREQ 30
@@ -27,20 +32,30 @@ const String server  = "192.168.69.4";
 #define DHTPIN  2
 DHTesp dht;
 
+// Current value of our sensor
+float humidity = 0.0;
+float temperature = 0.0;
 
-// Values read from sensor
-float humidity = -1;
-float temperature = -1;
-String status = "Unknown";
+/// CALIBRATION DATA!!
+#define MAX_CALIB 5
+float calib_hum[MAX_CALIB];
+float calib_temp[MAX_CALIB];
+float meas_hum[MAX_CALIB];
+float meas_temp[MAX_CALIB];
+
+//=================================================
+//=================================================
 
 
-/// CALIBRATION DATA
-// baseline => 49% 75F
-// upstairs => 42% 83F
-// downstairs => 41% 83F
-// basement => 41% 83F
-float offset_humidity = -7.5;
-float offset_temperature = -8.0;
+// Include our handle functions
+#include "linreg.h"
+#include "func_index.h"
+#include "func_storage.h"
+#include "func_reading.h"
+
+
+//=================================================
+//=================================================
 
  
 void setup(void)
@@ -52,6 +67,10 @@ void setup(void)
   
   // Initialize temperature sensor
   dht.setup(DHTPIN, DHTesp::DHT22);
+
+  // Load from our eeprom
+  load_from_eeprom();
+  //clear_eeprom();
 
   // DHCP Hostname (useful for finding device for static lease)
   WiFi.hostname(device);
@@ -68,11 +87,21 @@ void setup(void)
   Serial.println("");
 
   // Print debug info
-  Serial.println("DHT Weather Reading Server");
+  Serial.println("DHT Sensor Client");
   Serial.print("Connected to ");
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+
+  // Route for root / web page
+  website.on("/", HTTP_GET, render_index);
+  website.on("/", HTTP_POST, handle_reading);
+
+  // Sleep for a sec
+  delay(1000);
+
+  // Start server
+  website.begin();
 
 
 }
@@ -81,25 +110,31 @@ void loop(void) {
 
   // Reading temperature and humidity
   // Note that this can take a lot of time and is blocking...
+  // Values read from sensor
   humidity = dht.getHumidity();
   temperature = dht.getTemperature();
-  status = dht.getStatusString();
+  String status = dht.getStatusString();
 
   // Convert from Celsius to Fahrenheit
   temperature = dht.toFahrenheit(temperature);
 
-  // Add our offsets
-  humidity += offset_humidity;
-  temperature += offset_temperature;
+  // Add our offsets calculated from the linear regression
+  float m,b,r;
+  linreg(MAX_CALIB,meas_hum,calib_hum,m,b,r);
+  float humidity_edited = m*humidity+b;
+  linreg(MAX_CALIB,meas_temp,calib_temp,m,b,r);
+  float temperature_edited = m*temperature+b;
 
   // Check if any reads failed and exit early (to try again).
   if (isnan(humidity)) {
     Serial.println("Failed to read from DHT sensor (humidity)!");
     humidity = -1;
+    humidity_edited = -1;
   }
   if (isnan(temperature)) {
     Serial.println("Failed to read from DHT sensor (temperature)!");
     temperature = -1;
+    temperature_edited = -1;
   }
 
   // Check WiFi connection status
@@ -113,8 +148,8 @@ void loop(void) {
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     // Send the pose request
-    Serial.println(device+","+humidity+","+temperature+","+status);
-    int httpCode = http.POST("device="+device+"&humidity="+humidity+"&temperature="+temperature+"&status="+status);
+    Serial.println(device+","+humidity+","+temperature+","+status+","+WiFi.localIP().toString());
+    int httpCode = http.POST("device="+device+"&humidity="+humidity_edited+"&temperature="+temperature_edited+"&humidity_raw="+humidity+"&temperature_raw="+temperature+"&status="+status+"&ip="+WiFi.localIP().toString());
     Serial.println("http response: "+httpCode);
 
     // Could get a return payload...
