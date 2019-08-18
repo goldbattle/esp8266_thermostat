@@ -38,11 +38,11 @@ void render_index(AsyncWebServerRequest *request) {
     // Current RAW values
     html_data += "<div class=\"form-group\">";
     html_data += "<label>Raw Sensor Temperature</label>";
-    html_data += "<input class=\"form-control\" type=\"number\" value=\""+String(temperature)+"\" disabled>";
+    html_data += "<input class=\"form-control\" type=\"number\" step=\"0.01\" name=\"m_temp\" value=\""+String(temperature)+"\">";
     html_data += "</div>";
     html_data += "<div class=\"form-group\">";
     html_data += "<label>Raw Sensor Humidity</label>";
-    html_data += "<input class=\"form-control\" type=\"number\" value=\""+String(humidity)+"\" disabled>";
+    html_data += "<input class=\"form-control\" type=\"number\" step=\"0.01\" name=\"m_hum\" value=\""+String(humidity)+"\">";
     html_data += "</div>";
 
     // Current calibrated values
@@ -62,11 +62,11 @@ void render_index(AsyncWebServerRequest *request) {
     // user input temp
     html_data += "<div class=\"form-group\">";
     html_data += "<label>Calibration Temperature</label>";
-    html_data += "<input class=\"form-control\" type=\"number\" step=\"0.01\" name=\"temp\" value=\""+String(temperature)+"\">";
+    html_data += "<input class=\"form-control\" type=\"number\" step=\"0.01\" name=\"c_temp\" value=\""+String(temperature_edited)+"\">";
     html_data += "</div>";
     html_data += "<div class=\"form-group\">";
     html_data += "<label>Calibration Humidity</label>";
-    html_data += "<input class=\"form-control\" type=\"number\" step=\"0.01\" name=\"hum\" value=\""+String(humidity)+"\">";
+    html_data += "<input class=\"form-control\" type=\"number\" step=\"0.01\" name=\"c_hum\" value=\""+String(humidity_edited)+"\">";
     html_data += "</div>";
 
     // Form submit button

@@ -15,6 +15,7 @@ void handle_reading(AsyncWebServerRequest *request) {
         if(p->name()=="humidity") temp.humidity = p->value().toFloat();
         if(p->name()=="temperature") temp.temperature = p->value().toFloat();
         if(p->name()=="status") temp.status = p->value();
+        if(p->name()=="ip") temp.ipaddress = p->value();
         Serial.printf("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
     }
 
@@ -24,7 +25,10 @@ void handle_reading(AsyncWebServerRequest *request) {
         if(devices[i].equals(temp.device)) {
             // Skip this if our status is not "OK"
             devices_db[i].status = temp.status;
+            devices_db[i].ipaddress = temp.ipaddress;
             if(temp.status != "OK")
+                continue;
+            if(isnan(temp.humidity) || isnan(temp.temperature))
                 continue;
             // If we are a fresh device, init the history with the current temp
             if(!devices_db[i].initialized) {
@@ -32,7 +36,7 @@ void handle_reading(AsyncWebServerRequest *request) {
                     devices_db[i].hist_avg_humidity[j] = temp.humidity;
                     devices_db[i].hist_avg_temperature[j] = temp.temperature;
                 }
-                for(int j=0; j<48; j++) {
+                for(int j=0; j<12; j++) {
                     devices_db[i].hist_humidity[j] = temp.humidity;
                     devices_db[i].hist_temperature[j] = temp.temperature;
                 }
@@ -52,13 +56,12 @@ void handle_reading(AsyncWebServerRequest *request) {
             devices_db[i].hist_avg_humidity[9] = devices_db[i].humidity;
             devices_db[i].hist_avg_temperature[9] = devices_db[i].temperature;
             // check if we should append our historical times
-            double increment_sec = 1800;
-            //double increment_sec = 10;
+            double increment_sec = 7200;
             if(difftime(devices_db[i].timestamp,devices_db[i].hist_timestamp)>increment_sec) {
                 // Debug print
                 Serial.println("SHIFTING HIST!! => "+String(difftime(devices_db[i].timestamp,devices_db[i].hist_timestamp)));
                 // loop and shift forward
-                for(int j=1; j<48; j++) {
+                for(int j=1; j<12; j++) {
                     devices_db[i].hist_humidity[j-1] = devices_db[i].hist_humidity[j];
                     devices_db[i].hist_temperature[j-1] = devices_db[i].hist_temperature[j];
                 }
@@ -72,8 +75,8 @@ void handle_reading(AsyncWebServerRequest *request) {
                 c_hum /= 10;
                 c_temp /= 10;
                 // Set the newest to be the current temp
-                devices_db[i].hist_humidity[47] = c_hum;
-                devices_db[i].hist_temperature[47] = c_temp;
+                devices_db[i].hist_humidity[12-1] = c_hum;
+                devices_db[i].hist_temperature[12-1] = c_temp;
                 devices_db[i].hist_timestamp = devices_db[i].timestamp;
             }
         }

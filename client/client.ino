@@ -37,7 +37,7 @@ float humidity = 0.0;
 float temperature = 0.0;
 
 /// CALIBRATION DATA!!
-#define MAX_CALIB 5
+#define MAX_CALIB 8
 float calib_hum[MAX_CALIB];
 float calib_temp[MAX_CALIB];
 float meas_hum[MAX_CALIB];

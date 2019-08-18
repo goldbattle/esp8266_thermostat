@@ -4,6 +4,8 @@
 void handle_reading(AsyncWebServerRequest *request) {
 
     // Our new calibration values
+    float meas_tempr = 0.0;
+    float meas_humid = 0.0;
     float calib_tempr = 0.0;
     float calib_humid = 0.0;
 
@@ -11,8 +13,10 @@ void handle_reading(AsyncWebServerRequest *request) {
     int params = request->params();
     for(int i=0; i<params; i++){
         AsyncWebParameter* p = request->getParam(i);
-        if(p->name()=="temp") calib_tempr = p->value().toFloat();
-        if(p->name()=="hum") calib_humid = p->value().toFloat();
+        if(p->name()=="m_temp") meas_tempr = p->value().toFloat();
+        if(p->name()=="m_hum") meas_humid = p->value().toFloat();
+        if(p->name()=="c_temp") calib_tempr = p->value().toFloat();
+        if(p->name()=="c_hum") calib_humid = p->value().toFloat();
         Serial.printf("POST[%s]: %s\n", p->name().c_str(), p->value().c_str());
     }
     
@@ -25,8 +29,8 @@ void handle_reading(AsyncWebServerRequest *request) {
     }
     calib_temp[MAX_CALIB-1] = calib_tempr;
     calib_hum[MAX_CALIB-1] = calib_humid;
-    meas_temp[MAX_CALIB-1] = temperature;
-    meas_hum[MAX_CALIB-1] = humidity;
+    meas_temp[MAX_CALIB-1] = meas_tempr;
+    meas_hum[MAX_CALIB-1] = meas_humid;
 
     // Re-calculate our current best fit line
     save_to_eeprom();

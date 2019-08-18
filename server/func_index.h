@@ -78,7 +78,8 @@ void render_index(AsyncWebServerRequest *request) {
 
         // Display current status
         html_data += "<p class=\"text-center\">";
-        html_data += devices[i]+": "+String(devices_db[i].status)+" "+String(hours)+" hrs, "+String(minutes)+" min, "+String(seconds)+" sec old<br/>";
+        html_data += "<a href=\"http://"+String(devices_db[i].ipaddress)+"/\">"+devices[i]+"</a>: ";
+        html_data += String(devices_db[i].status)+" "+String(hours)+" hrs, "+String(minutes)+" min, "+String(seconds)+" sec old<br/>";
         html_data += String(devices_db[i].temperature)+" &#176;F - "+String(devices_db[i].humidity)+" %<br/>";
 
         // Compute axis min and max values
@@ -86,7 +87,7 @@ void render_index(AsyncWebServerRequest *request) {
         int t_max = 0;
         int h_min = 100;
         int h_max = 0;
-        for(int j=0; j<48; j++) {
+        for(int j=0; j<12; j++) {
             double temp = devices_db[i].hist_temperature[j];
             double hum = devices_db[i].hist_humidity[j];
             if(ceil(temp) > t_max) t_max = ceil(temp);
@@ -106,25 +107,24 @@ void render_index(AsyncWebServerRequest *request) {
         // Temperature transform calculation
         // highest deg=>0, lowest deg=>100
         html_data += "<polyline class=\"graphtemp\" points=\"";
-        for(int j=0; j<48; j++) {
-            double m = (abs(t_min-t_max)<1e-5)? 0 : 100.0/(t_min - t_max);
-            double y_point = m*devices_db[i].hist_temperature[j]-(m*t_max);
-            double x_point = (454.0-70.0)/(47.0-0.0)*j+70.0;
+        for(int j=0; j<12; j++) {
+            float m = (abs(t_min-t_max)<1e-5)? 0 : 100.0/(t_min - t_max);
+            float y_point = m*devices_db[i].hist_temperature[j]-(m*t_max);
+            float x_point = (454.0-70.0)/(11.0-0.0)*j+70.0;
             html_data += String(x_point)+","+String(y_point)+" ";
         }
         html_data += "\"/>";
 
-        // // Humidity transform calculation
-        // // highest rh=>0, lowest rh=>100
-        // html_data += "<polyline class=\"graphumid\" points=\"";
-        // for(int j=0; j<48; j++) {
-        //     double m = (abs(h_min-h_max)<1e-5)? 0 : 100.0/(h_min - h_max); 
-        //     double y_point = m*devices_db[i].hist_humidity[j]-(m*h_max);
-        //     double x_point = (454.0-70.0)/(47.0-0.0)*j+70.0;
-        //     html_data += String(x_point)+","+String(y_point)+" ";
-        //     delay(2);
-        // }
-        // html_data += "\"/>";
+        // Humidity transform calculation
+        // highest rh=>0, lowest rh=>100
+        html_data += "<polyline class=\"graphumid\" points=\"";
+        for(int j=0; j<12; j++) {
+            double m = (abs(h_min-h_max)<1e-5)? 0 : 100.0/(h_min - h_max); 
+            double y_point = m*devices_db[i].hist_humidity[j]-(m*h_max);
+            double x_point = (454.0-70.0)/(11.0-0.0)*j+70.0;
+            html_data += String(x_point)+","+String(y_point)+" ";
+        }
+        html_data += "\"/>";
 
         // Nice axis lines
         html_data += "<polyline class=\"graphline\" points=\"68,102  454,102\"/>";

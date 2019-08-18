@@ -17,10 +17,10 @@ const char* password = "xxxxxxxx";
 const char* device   = "thermostat";
 
 // Static IP address config
-IPAddress staticIP(192, 168, 69, 4);  //ESP static ip
-IPAddress gateway(192, 168, 69, 1);   //IP Address of your WiFi Router (Gateway)
+IPAddress staticIP(192, 168, 70, 4);  //ESP static ip
+IPAddress gateway(192, 168, 70, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);   //Subnet mask
-IPAddress dns(192, 168, 69, 1);       //DNS
+IPAddress dns(192, 168, 70, 1);       //DNS
 
 // Our system status
 bool fan_on = false;
@@ -63,13 +63,14 @@ typedef struct {
     float humidity;
     float temperature;
     String status;
+    String ipaddress;
     // Rolling average
     float hist_avg_humidity[10];
     float hist_avg_temperature[10];
     // Historical sensor values
     time_t hist_timestamp;
-    float hist_humidity[48];
-    float hist_temperature[48];
+    float hist_humidity[12];
+    float hist_temperature[12];
 } device_record;
 
 // Our database structure
@@ -137,7 +138,7 @@ void setup() {
             devices_db[i].hist_avg_humidity[j] = 0;
             devices_db[i].hist_avg_temperature[j] = 0;
         }
-        for(int j=0; j<48; j++) {
+        for(int j=0; j<12; j++) {
             devices_db[i].hist_humidity[j] = 0;
             devices_db[i].hist_temperature[j] = 0;
         }
