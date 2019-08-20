@@ -8,6 +8,9 @@ Overall the project costs about $100 for four remote sensing devices, a four rel
 
 ![screenshot 1](docs/Screenshot_20190702-220020.jpg)
 ![screenshot 2](docs/Screenshot_20190702-220034.jpg)
+![screenshot 3](docs/Screenshot_20190819-201549.jpg)
+![screenshot 4](docs/Screenshot_20190819-201555.jpg)
+
 
 ## Key Features
 
@@ -15,7 +18,16 @@ Overall the project costs about $100 for four remote sensing devices, a four rel
 * Selection of what temperature "device" to cool to
 * Historical views of temperature and humidity
 * Remote control of thermostat if paired with VPN
+* Calibration of remote devices through best fit
 
+
+
+## Dependencies
+
+* Board Library - https://github.com/esp8266/Arduino
+* DHTesp - https://github.com/beegee-tokyo/DHTesp
+* ESPAsyncWebServer - https://github.com/me-no-dev/ESPAsyncWebServer
+* ESPAsyncTCP - https://github.com/me-no-dev/ESPAsyncTCP
 
 
 
@@ -49,6 +61,8 @@ There is a pretty nice pre-made four relay system on amazon that I used, but one
 These client devices have a simple task of just reporting the current temperature and humidity to the central device.
 These leverage the DHT22 sensors, which I have found seem to have very poor initial calibration.
 I am not sure of the best way to calibrate them, but for now just using a known good sensor and "offset" the current sensor readings to it.
+For now calibration values can be set that map the raw values into the calibrated values.
+These are fitted using a linear regression to find the best correspondence between the read and calibrated values.
 You will want to assign a static IP to your server device and then input this into each client so that they can report their temperature readings to it.
 You will also need to configure the SSID and password for your wireless router so that the ESP8266 can connect.
 
@@ -64,8 +78,7 @@ You will also need to configure the SSID and password for your wireless router s
 
 ## Afterthoughts 
 
-The one battle that I am still fighting is the calibration of the client devices.
-I think that I need to research a better way to calibrate these and maybe allow for me to set their calibration offsets through a web interface would allow for updating of their values more easily.
+The calibration still seems to be a weak point, but for now it should perform as expected if there is a linear mapping.
 I am unsure if this actually will save anything on the electric bill, but the convenience factor of being able to access on my phone is a big "win" in my books.
 I think that some more intelligent choices on when to enable and if we should cool/heat past the desired temperature is an interesting future direction.
 The original idea was to stick a neural network on this, but due to the ESP8266 small size and slow execution this probably is not possible in practice.
