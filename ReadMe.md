@@ -5,11 +5,7 @@ This came out of the desire to have both remote and finer grain control of our h
 Specifically for multi-floor houses with a single heating and cooling system it might be desirable to cool in respect to the top, ground, or basement floors.
 This of course isn't achievable in a single thermostat system, and thus a multi-sensor system that reports to central controller architecture was born.
 Overall the project costs about $100 for four remote sensing devices, a four relay central server, power and programing adapters.
-
-![screenshot 1](docs/Screenshot_20190702-220020.jpg)
-![screenshot 2](docs/Screenshot_20190702-220034.jpg)
-![screenshot 3](docs/Screenshot_20190819-201549.jpg)
-![screenshot 4](docs/Screenshot_20190819-201555.jpg)
+See below for interface screenshots!!
 
 
 ## Key Features
@@ -19,7 +15,6 @@ Overall the project costs about $100 for four remote sensing devices, a four rel
 * Historical views of temperature and humidity
 * Remote control of thermostat if paired with VPN
 * Calibration of remote devices through best fit
-
 
 
 ## Dependencies
@@ -47,13 +42,17 @@ To "enable" one of the functions, have the relay connect the 24VAC wire with the
 There is a pretty nice pre-made four relay system on amazon that I used, but one could easily build one and trigger using a ESP8266 form factor that exposes enough GPIO pins.
 
 
-![server photo](docs/JPEG_20190702_220502.jpg)
 
 * [LinkSprite 211201004 Link Node R4 Arduino-Compatible Wi-Fi Relay Controller](https://www.amazon.com/gp/product/B01NB0XJ0F/)
 * [AC 100-240V to DC 5V 2A Power Supply Adapter](https://www.amazon.com/gp/product/B0719GY29M/)
 * Wire to connect to the heater/cooling unit (I need to redo this with a smaller gauge)
 * Some quick disconnect plugs so you can disconnect easily (I need to buy these)
 
+
+![server photo](docs/JPEG_20190702_220502.jpg)
+
+![screenshot 1](docs/Screenshot_20190702-220020.jpg)
+![screenshot 2](docs/Screenshot_20190702-220034.jpg)
 
 
 ## Client Devices
@@ -66,7 +65,6 @@ These are fitted using a linear regression to find the best correspondence betwe
 You will want to assign a static IP to your server device and then input this into each client so that they can report their temperature readings to it.
 You will also need to configure the SSID and password for your wireless router so that the ESP8266 can connect.
 
-![client photo](docs/JPEG_20190702_220221.jpg)
 
 * [ESP8266 ESP-01 AM2302 DHT22 Temperature Humidity Sensor WiFi Wireless Module Set](https://www.amazon.com/gp/product/B07L6CYFT9/)
 * [ESP-01S USB to ESP8266 ESP-01S Wireless Wifi Adapter Module](https://www.amazon.com/gp/product/B07KF119YB/)
@@ -74,6 +72,11 @@ You will also need to configure the SSID and password for your wireless router s
 * [12V DC Power Connector 5.5mm x 2.1mm 24V Power Jack Socket](https://www.amazon.com/gp/product/B079R9WCG2/)
 * [70cm 2 Pin Female to Female Dupont Jumper Wire Cable](https://www.amazon.com/gp/product/B07CPS72RR/)
 
+
+![client photo](docs/JPEG_20190702_220221.jpg)
+
+![screenshot 3](docs/Screenshot_20190819-201549.jpg)
+![screenshot 4](docs/Screenshot_20190819-201555.jpg)
 
 
 ## Afterthoughts 
