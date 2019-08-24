@@ -75,6 +75,10 @@ void setup(void)
   // DHCP Hostname (useful for finding device for static lease)
   WiFi.hostname(device);
 
+  // Disable access point mode as clients only connect to wifi
+  WiFi.softAPdisconnect(true);
+  WiFi.mode(WIFI_STA);
+
   // Connect to WiFi network
   WiFi.begin(ssid, password);
   Serial.print("\n\r \n\rWorking to connect");
