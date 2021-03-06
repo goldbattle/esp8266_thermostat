@@ -12,9 +12,9 @@
 //=================================================
 //=================================================
 
-const char* ssid     = "xxxxxxxx";
-const char* password = "xxxxxxxx";
-const String device  = "upstairs";
+const char* ssid     = "";
+const char* password = "";
+const String device  = "office";
 const String server  = "thermostat.local.lan";
 
 //=================================================

@@ -12,8 +12,8 @@
 //=================================================
 //=================================================
 
-const char* ssid     = "xxxxxxxx";
-const char* password = "xxxxxxxx";
+const char* ssid     = "";
+const char* password = "";
 const char* device   = "thermostat";
 
 // Static IP address config
