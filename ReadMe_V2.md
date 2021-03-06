@@ -4,8 +4,13 @@
 This came out of the desire to have both remote and finer grain control of our heating and cooling system.
 Specifically for multi-floor houses with a single heating and cooling system it might be desirable to cool in respect to the top, ground, or basement floors.
 This of course isn't achievable in a single thermostat system, and thus a multi-sensor system that reports to central controller architecture was born.
-Overall the project costs about $100 for four remote sensing devices, a four relay central server, power and programing adapters.
-See below for interface screenshots!!
+Overall the project costs about $60 for the server and GW1000 base station, and an extra $20 per extra sensor you get (up to 8 in total).
+The Ecowitt GW1000 is the base of the system, and provides a single point to query to get information about all sensors throughout the house.
+Seems like a reasonable deal to get a calibrated sensor, with over 1.5 year long battery and relatively high frequency data.
+
+The "server" is a small 4 relay board near your heating and cooling unit which can then query the GW1000 to get temperature and humidity information.
+This server provides a small web-server that users can use to control the 24 hour schedule along with the settings of the system.
+Please checkout the screenshots bellow as they provide the most information about the functionality of the system.
 
 
 ## Key Features
@@ -13,9 +18,9 @@ See below for interface screenshots!!
 * Web-based interface for thermostat
 * Integrates with [Ecowitt GW1000](https://www.ecowitt.com/shop/goodsDetail/16) gateway sensors
 * Selection of what temperature "device" to cool to
-* Historical record of how long AC / Heat / Fan was on
+* Historical record of how long Cool / Heat / Fan was on
 * Historical sensor information (only one is shown on stats page for now)
-* 24 schedule of what device, temp, and fan status should be
+* 24 hour schedule of what device, temp, and fan status should be
 * Settings page for changing and saving configuration
 * Access point mode for easy setup (CSS styling needs to be fixed still)
 * Day and night CSS style mode for easy viewing
@@ -50,7 +55,7 @@ There is a pretty nice pre-made four relay system on amazon that I used, but one
 * [5pin 18 Gauge Thermostat Wire](https://www.amazon.com/dp/product/B0069F4HHC/)
 
 
-![server photo](docs/JPEG_20190702_220502.jpg)
+![server photo](docs/IMG_20210305_204537.jpg)
 
 Main Screen:
 
@@ -73,4 +78,7 @@ Settings Screen:
 Overall this is a really great system that provides all the information and control that I need.
 If there was one thing it would be I need to add support for an SD card to save the historical data to,
 and also support serving of the style sheets instead of from the internet.
+
+
+
 
