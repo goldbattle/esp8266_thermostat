@@ -52,8 +52,7 @@ There is a pretty nice pre-made four relay system on amazon that I used, but one
 
 ![server photo](docs/JPEG_20190702_220502.jpg)
 
-![screenshot 1](docs/Screenshot_20190702-220020.jpg)
-![screenshot 2](docs/Screenshot_20190702-220034.jpg)
+![screenshot 1](docs/Screenshot_20190702-220020.jpg)![screenshot 2](docs/Screenshot_20190702-220034.jpg)
 
 
 ## Client Devices

@@ -53,14 +53,17 @@ There is a pretty nice pre-made four relay system on amazon that I used, but one
 ![server photo](docs/JPEG_20190702_220502.jpg)
 
 Main Screen:
+
 ![screenshot 1](docs/Screenshot_20210305-202728.jpg)![screenshot 2](docs/Screenshot_20210305-202735.jpg)![screenshot 3](docs/Screenshot_20210305-202740.jpg)
 
 
 Statistics Screen:
+
 ![screenshot 4](docs/Screenshot_20210305-202654.jpg)
 
 
 Settings Screen:
+
 ![screenshot 5](docs/Screenshot_20210305-202759.jpg)![screenshot 6](docs/Screenshot_20210305-202818.jpg)![screenshot 7](docs/Screenshot_20210305-202823.jpg)
 
 
